@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import React from "react";
+import "./scss/index.scss";
 
 const App = () => {
   const [data, setData] = useState(null);
