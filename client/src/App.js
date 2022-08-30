@@ -1,4 +1,9 @@
 import { useState, useEffect } from "react";
+//
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Main from "./components/Main";
+//
 import React from "react";
 import "./scss/index.scss";
 
@@ -13,9 +18,10 @@ const App = () => {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <p>{!data ? "Loading..." : data}</p>
-      </header>
+      <Header />
+      <Main />
+      <p className="data-text">{!data ? "Loading..." : data}</p>
+      <Footer />
     </div>
   );
 };
