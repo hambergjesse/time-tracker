@@ -1,0 +1,13 @@
+.info-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 500px;
+  width: 100%;
+  background: var(--colorWhite);
+
+  .info-data-text {
+    color: black;
+    width: 325px;
+  }
+}
