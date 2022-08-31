@@ -34,7 +34,7 @@ main().catch(console.error);
 app.get("/api", (req, res) => {
   res.json({
     message:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos, harum sunt fuga rem nobis molestias libero quia architecto delectus. Harum, minus ut eos quasi earum, et unde eius optio, amet dolorem sit. Dignissimos, delectus. Illum quia voluptatibus quos officiis.",
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos, harum sunt fuga rem nobis molestias libero quia architecto delectus. Harum, minus ut eos quasi earum, et unde eius optio, amet dolorem sit.",
   });
 });
 
