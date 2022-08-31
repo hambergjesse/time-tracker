@@ -1,0 +1,15 @@
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 25px;
+
+  .home-text-container {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    gap: 10px;
+  }
+}
