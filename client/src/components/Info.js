@@ -8,11 +8,12 @@ const Info = () => {
       .then((res) => res.json())
       .then((actualData) => setData(actualData));
   }, []);
-  console.log(data);
 
   return (
     <div className="info-container">
-      <p className="info-data-text">{!data ? "Loading..." : data._id}</p>
+      <p className="info-data-text">
+        {!data ? "Loading..." : data["items"][0].lastlogin}
+      </p>
     </div>
   );
 };
