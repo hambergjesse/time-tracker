@@ -31,7 +31,7 @@ app.get("/users", (req, res) => {
       res.status(500).json({ err: err });
       return;
     }
-    res.status(200).json({ items });
+    res.status(200).json(items);
     console.log(items);
   });
 });
