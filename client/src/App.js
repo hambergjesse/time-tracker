@@ -15,7 +15,6 @@ const App = () => {
     <div className="App">
       <Router>
         <Header />
-
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/info" element={<Info />} />

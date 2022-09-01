@@ -4,9 +4,9 @@ const Info = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch("/api")
+    fetch("/users")
       .then((res) => res.json())
-      .then((data) => setData(data.message));
+      .then((actualData) => setData(actualData.name));
   }, []);
 
   return (
