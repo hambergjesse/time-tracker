@@ -1,16 +1,15 @@
 const mongo = require("mongodb").MongoClient;
 const express = require("express");
-const PORT = process.env.PORT || 3001;
 const app = express();
 
-const url =
+const uri =
   "mongodb+srv://hambergjesse:123@cluster0.osqpkfc.mongodb.net/test?retryWrites=true&w=majority";
 
 // connect to  mongodb
 let db, accountdata;
 
 mongo.connect(
-  url,
+  uri,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -32,11 +31,11 @@ app.get("/users", (req, res) => {
       res.status(500).json({ err: err });
       return;
     }
-    res.status(200).json({ accountdata: items });
+    res.status(200).json({ items });
     console.log(items);
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
+app.listen(process.env.PORT || 3001, () => {
+  console.log(`Server listening on ${process.env.PORT || 3001}`);
 });

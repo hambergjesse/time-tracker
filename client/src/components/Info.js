@@ -6,12 +6,13 @@ const Info = () => {
   useEffect(() => {
     fetch("/users")
       .then((res) => res.json())
-      .then((actualData) => setData(actualData.name));
+      .then((actualData) => setData(actualData));
   }, []);
+  console.log(data);
 
   return (
     <div className="info-container">
-      <p className="info-data-text">{!data ? "Loading..." : data}</p>
+      <p className="info-data-text">{!data ? "Loading..." : data._id}</p>
     </div>
   );
 };
