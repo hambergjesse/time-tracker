@@ -19,6 +19,13 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/info" element={<Info />} />
         </Routes>
+        <p className="data-text">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa earum
+          recusandae quos veritatis, reprehenderit rerum inventore dolor eum
+          placeat libero similique ipsa voluptas in aut facere ducimus numquam
+          impedit, quasi ipsum temporibus commodi. Molestiae velit suscipit
+          pariatur error.
+        </p>
         <Footer />
       </Router>
     </div>
