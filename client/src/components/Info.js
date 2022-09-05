@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 
 const Info = () => {
   const [data, setData] = useState(null);
-  console.log(data);
 
   useEffect(() => {
     fetch("/users")

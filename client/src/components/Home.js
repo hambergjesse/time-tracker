@@ -1,11 +1,31 @@
 import Avatar from "../assets/avatar.png";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const Home = () => {
+  const [selectedName, setSelectedName] = useState();
+  const [data, setData] = useState(null);
   const navigate = useNavigate();
 
+  // pull data from backend
+  useEffect(() => {
+    fetch("/users")
+      .then((res) => res.json())
+      .then((actualData) => setData(actualData));
+  }, []);
+
+  // change page
   const changePath = () => {
     navigate("/info");
+  };
+
+  const handleSearchResult = () => {
+    const selectElement = document.querySelector("#select");
+    const inputName = selectElement.options[selectElement.selectedIndex].value;
+    console.log(inputName);
+
+    setSelectedName(!data ? "Loading..." : data.indexOf(inputName));
+    changePath();
   };
 
   return (
@@ -20,9 +40,17 @@ const Home = () => {
       </div>
       <div className="login-container">
         <img src={Avatar} alt="" />
-        <input placeholder="insert name"></input>
+        <select id="select" name="users">
+          {!data
+            ? "Loading..."
+            : data.map((user) => (
+                <option key={user.id} value={user.name}>
+                  {user.name}
+                </option>
+              ))}
+        </select>
         <input placeholder="insert password"></input>
-        <button onClick={changePath}>Log In</button>
+        <button onClick={handleSearchResult}>Log In</button>
       </div>
     </div>
   );
