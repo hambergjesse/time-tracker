@@ -29,10 +29,21 @@ const Info = () => {
         {!data ? "Loading..." : "Username: " + data[user].name}
       </p>
       <p className="info-data-text">
-        {!data ? "Loading..." : "Password: super secret password"}
+        {!data ? "Loading..." : "Password: " + data[user].password}
       </p>
       <p className="info-data-text">
-        {!data ? "Loading..." : "Last Login: " + data[user].lastlogin}
+        {!data
+          ? "Loading..."
+          : "Last Login: " +
+            new Date().getDate() +
+            "/" +
+            (new Date().getMonth() + 1) +
+            "/" +
+            new Date().getFullYear() +
+            " @ " +
+            new Date().getHours() +
+            ":" +
+            new Date().getMinutes()}
       </p>
       <h4 className="info-data-text">Login History</h4>
       <div className="info-data-text">
