@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const Home = () => {
-  const [selectedName, setSelectedName] = useState();
   const [data, setData] = useState(null);
   const navigate = useNavigate();
 
@@ -24,8 +23,8 @@ const Home = () => {
     const inputName = selectElement.options[selectElement.selectedIndex].value;
     console.log(inputName);
 
-    setSelectedName(!data ? "Loading..." : data.indexOf(inputName));
     changePath();
+    return !data ? "Loading..." : data.indexOf(inputName);
   };
 
   return (
