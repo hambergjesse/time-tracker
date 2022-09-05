@@ -2,10 +2,12 @@ import Avatar from "../assets/avatar.png";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
+let searchResult;
+
 const Home = () => {
-  const [searchResult, setSearchResult] = useState(0);
   const [data, setData] = useState(null);
   const navigate = useNavigate();
+  searchResult = 0;
 
   // pull data from backend
   useEffect(() => {
@@ -24,8 +26,14 @@ const Home = () => {
     const inputName = selectElement.options[selectElement.selectedIndex].value;
     console.log(inputName);
 
+    searchResult = !data
+      ? "Loading..."
+      : data
+          .map(function (user) {
+            return user.name;
+          })
+          .indexOf(inputName);
     changePath();
-    setSearchResult(!data ? "Loading..." : data.indexOf(inputName));
   };
 
   return (
@@ -57,3 +65,4 @@ const Home = () => {
 };
 
 export default Home;
+export { searchResult };
