@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const Home = () => {
+  const [searchResult, setSearchResult] = useState(0);
   const [data, setData] = useState(null);
   const navigate = useNavigate();
 
@@ -24,7 +25,7 @@ const Home = () => {
     console.log(inputName);
 
     changePath();
-    return !data ? "Loading..." : data.indexOf(inputName);
+    setSearchResult(!data ? "Loading..." : data.indexOf(inputName));
   };
 
   return (

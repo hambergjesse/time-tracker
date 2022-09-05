@@ -1,13 +1,20 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Info = () => {
   const [data, setData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("/users")
       .then((res) => res.json())
       .then((actualData) => setData(actualData));
   }, []);
+
+  // change page
+  const changePath = () => {
+    navigate("/");
+  };
 
   const loginHistory = !data
     ? "Loading..."
@@ -29,6 +36,7 @@ const Info = () => {
       <div className="info-data-text">
         {!data ? "Loading..." : loginHistory}
       </div>
+      <button onClick={changePath}>Log Out</button>
     </div>
   );
 };
