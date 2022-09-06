@@ -1,31 +1,28 @@
-const mongo = require("mongodb").MongoClient;
 const express = require("express");
 const app = express();
+const mongoose = require("mongoose");
+const connection = mongoose.connection;
 
 const uri =
-  "mongodb+srv://hambergjesse:123@cluster0.osqpkfc.mongodb.net/test?retryWrites=true&w=majority";
+  "mongodb+srv://hambergjesse:123@cluster0.osqpkfc.mongodb.net/timetracker";
 
-// connect to  mongodb
-let db, accountdata;
+// connect to database w/ mongoose
+mongoose.connect(uri);
+let collection;
 
-mongo.connect(
-  uri,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  },
-  (err, client) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    db = client.db("timetracker");
-    accountdata = db.collection("accountdata");
-  }
-);
+mongoose.connection.on("open", function () {
+  console.log("mongodb is connected!!");
+});
 
+connection.on("error", console.error.bind(console, "connection error:"));
+
+connection.once("open", async function () {
+  collection = connection.db.collection("accountdata");
+});
+
+// create API for front end fetch
 app.get("/users", (req, res) => {
-  accountdata.find().toArray((err, items) => {
+  collection.find().toArray((err, items) => {
     if (err) {
       console.error(err);
       res.status(500).json({ err: err });
