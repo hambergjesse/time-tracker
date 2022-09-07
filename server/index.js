@@ -22,14 +22,14 @@ connection.once("open", async function () {
 
 // create API for front end fetch
 app.get("/users", (req, res) => {
-  collection.find().toArray((err, items) => {
+  collection.find().toArray((err, users) => {
     if (err) {
       console.error(err);
       res.status(500).json({ err: err });
       return;
     }
-    res.status(200).json(items);
-    console.log(items);
+    res.status(200).json(users);
+    console.log(users);
   });
 });
 

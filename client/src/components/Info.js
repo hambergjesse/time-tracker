@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { searchResult } from "./Home";
+import { userIndex } from "./Home";
 
 const Info = () => {
   const [data, setData] = useState(null);
   const navigate = useNavigate();
-  const user = searchResult;
 
   useEffect(() => {
     fetch("/users")
@@ -20,16 +19,18 @@ const Info = () => {
 
   const loginHistory = !data
     ? "Loading..."
-    : data[user].pastlogins.map((item, index) => <div key={index}>{item}</div>);
+    : data[userIndex].pastlogins.map((item, index) => (
+        <div key={index}>{item}</div>
+      ));
 
   return (
     <div className="info-container">
       <h3 className="info-data-text">User Info:</h3>
       <p className="info-data-text">
-        {!data ? "Loading..." : "Username: " + data[user].name}
+        {!data ? "Loading..." : "Username: " + data[userIndex].name}
       </p>
       <p className="info-data-text">
-        {!data ? "Loading..." : "Password: " + data[user].password}
+        {!data ? "Loading..." : "Password: " + data[userIndex].password}
       </p>
       <p className="info-data-text">
         {!data
