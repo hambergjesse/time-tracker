@@ -2,6 +2,7 @@ require("dotenv").config();
 const mongo = require("mongodb").MongoClient;
 const express = require("express");
 const app = express();
+app.use(express.json());
 
 const jwt = require("jsonwebtoken");
 
@@ -33,11 +34,15 @@ app.get("/users", (req, res) => {
       return;
     }
     res.status(200).json(users);
-    console.log(users);
+    //console.log(users);
   });
 });
 
-app.post("/users"), (req, res) => {};
+app.post("/user"),
+  (req, res) => {
+    const user = req.body;
+    console.log(user);
+  };
 
 app.post("/login", (req, res) => {
   //auth user

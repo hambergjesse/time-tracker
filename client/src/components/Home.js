@@ -33,21 +33,31 @@ const Home = () => {
             return user.name;
           })
           .indexOf(inputName);
-    handleOnClick();
-    changePath();
-  };
 
-  const handleOnClick = () => {
-    const date = new Date();
-    fetch("/users", {
+    let lastlogin =
+      new Date().getDate() +
+      "/" +
+      (new Date().getMonth() + 1) +
+      "/" +
+      new Date().getFullYear() +
+      " @ " +
+      new Date().getHours() +
+      ":" +
+      new Date().getMinutes();
+
+    console.log(data[userIndex].name);
+    // update user data
+    fetch("/user", {
       method: "POST",
       body: JSON.stringify({
-        lastlogin: date,
+        name: data[userIndex].name,
+        lastlogin: lastlogin,
       }),
       headers: {
         "Content-type": "application/json",
       },
     });
+    changePath();
   };
 
   return (
