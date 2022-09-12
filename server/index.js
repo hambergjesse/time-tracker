@@ -1,24 +1,28 @@
+require("dotenv").config();
+const mongo = require("mongodb").MongoClient;
 const express = require("express");
 const app = express();
-const mongoose = require("mongoose");
-const connection = mongoose.connection;
 
-const uri =
-  "mongodb+srv://hambergjesse:123@cluster0.osqpkfc.mongodb.net/timetracker";
+const jwt = require("jsonwebtoken");
 
-// connect to database w/ mongoose
-mongoose.connect(uri);
-let collection;
+// connect to mongodb
+let db, collection;
 
-mongoose.connection.on("open", function () {
-  console.log("mongodb is connected!!");
-});
-
-connection.on("error", console.error.bind(console, "connection error:"));
-
-connection.once("open", async function () {
-  collection = connection.db.collection("accountdata");
-});
+mongo.connect(
+  process.env.MONGO_URI,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+  (err, client) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    db = client.db("timetracker");
+    collection = db.collection("accountdata");
+  }
+);
 
 // create API for front end fetch
 app.get("/users", (req, res) => {
@@ -31,6 +35,14 @@ app.get("/users", (req, res) => {
     res.status(200).json(users);
     console.log(users);
   });
+});
+
+app.post("/users"), (req, res) => {};
+
+app.post("/login", (req, res) => {
+  //auth user
+  const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+  res.json({ accessToken: accessToken });
 });
 
 app.listen(process.env.PORT || 3001, () => {
