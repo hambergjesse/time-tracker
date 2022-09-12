@@ -34,15 +34,18 @@ app.get("/users", (req, res) => {
       return;
     }
     res.status(200).json(users);
-    //console.log(users);
   });
 });
 
-app.post("/user"),
-  (req, res) => {
-    const user = req.body;
-    console.log(user);
-  };
+app.post("/user", (req, res) => {
+  const user = req.body;
+  console.log(user);
+
+  collection.findOneAndUpdate(
+    { name: user.name },
+    { $set: { lastlogin: user.lastlogin } }
+  );
+});
 
 app.post("/login", (req, res) => {
   //auth user

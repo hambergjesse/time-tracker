@@ -24,7 +24,6 @@ const Home = () => {
   const handleSearchResult = () => {
     const selectElement = document.querySelector("#select");
     const inputName = selectElement.options[selectElement.selectedIndex].value;
-    console.log(inputName);
 
     userIndex = !data
       ? "Loading..."
@@ -34,6 +33,7 @@ const Home = () => {
           })
           .indexOf(inputName);
 
+    // get date and time
     let lastlogin =
       new Date().getDate() +
       "/" +
@@ -45,18 +45,22 @@ const Home = () => {
       ":" +
       new Date().getMinutes();
 
+    const userData = {
+      name: data[userIndex].name,
+      lastlogin: lastlogin,
+    };
+
     console.log(data[userIndex].name);
     // update user data
     fetch("/user", {
       method: "POST",
-      body: JSON.stringify({
-        name: data[userIndex].name,
-        lastlogin: lastlogin,
-      }),
+      body: JSON.stringify(userData),
       headers: {
         "Content-type": "application/json",
       },
-    });
+    })
+      .then((res) => res.json())
+      .then((postData) => console.log(postData));
     changePath();
   };
 
