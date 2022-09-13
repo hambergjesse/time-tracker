@@ -2,6 +2,7 @@ require("dotenv").config();
 const mongo = require("mongodb").MongoClient;
 const express = require("express");
 const app = express();
+const bcrypt = require("bcrypt");
 app.use(express.json());
 
 const jwt = require("jsonwebtoken");
@@ -35,6 +36,39 @@ app.get("/users", (req, res) => {
     }
     res.status(200).json(users);
   });
+});
+
+app.post("/users/login", async (req, res) => {
+  try {
+    const user = req.body;
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    console.log(hashedPassword);
+    collection.findOneAndUpdate(
+      { name: user.name },
+      { $set: { password: hashedPassword } }
+    );
+    res.status(201).send();
+  } catch {
+    res.status(500).send();
+  }
+});
+
+app.post("/users/login/auth", async (req, res) => {
+  const user = await collection.find({ name: req.body.name });
+  if (user === null) {
+    return res.status(400).send("Cannot find user");
+  }
+  console.log(req.body.name);
+  console.log("lol" + user.name);
+  try {
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      res.send("Success");
+    } else {
+      res.send("Not Allowed");
+    }
+  } catch {
+    res.status(500).send();
+  }
 });
 
 app.post("/user", (req, res) => {

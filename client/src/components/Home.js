@@ -23,7 +23,9 @@ const Home = () => {
 
   const handleSearchResult = () => {
     const selectElement = document.querySelector("#select");
+    const selectPass = document.querySelector("#passfield");
     const inputName = selectElement.options[selectElement.selectedIndex].value;
+    const inputPass = selectPass.value;
 
     userIndex = !data
       ? "Loading..."
@@ -45,8 +47,10 @@ const Home = () => {
       ":" +
       new Date().getMinutes();
 
+    // sent data
     const userData = {
       name: data[userIndex].name,
+      password: inputPass,
       lastlogin: lastlogin,
       pastlogins: lastlogin,
     };
@@ -62,6 +66,15 @@ const Home = () => {
     })
       .then((res) => res.json())
       .then((postData) => console.log(postData));
+
+    // password auth bcrypt
+    fetch("/users/login/auth", {
+      method: "POST",
+      body: JSON.stringify(userData),
+      headers: {
+        "Content-type": "application/json",
+      },
+    }).then((res) => console.log(res));
     changePath();
   };
 
@@ -86,7 +99,7 @@ const Home = () => {
                 </option>
               ))}
         </select>
-        <input placeholder="insert password"></input>
+        <input id="passfield" placeholder="insert password"></input>
         <button onClick={handleSearchResult}>Log In</button>
       </div>
     </div>

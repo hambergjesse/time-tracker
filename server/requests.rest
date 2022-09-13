@@ -2,9 +2,10 @@ GET http://localhost:3001/users
 
 ###
 
-POST http://localhost:3001/login
+POST http://localhost:3001/users
 Content-Type: application/json
 
 {
-    "name": "hambjes"
+    "name": "hambjes",
+    "password": "hambjes"
 }
