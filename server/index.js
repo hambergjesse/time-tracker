@@ -45,6 +45,11 @@ app.post("/user", (req, res) => {
     { name: user.name },
     { $set: { lastlogin: user.lastlogin } }
   );
+
+  collection.updateOne(
+    { name: user.name },
+    { $push: { pastlogins: user.lastlogin } }
+  );
 });
 
 app.post("/login", (req, res) => {

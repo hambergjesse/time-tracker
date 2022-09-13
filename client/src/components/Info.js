@@ -33,18 +33,7 @@ const Info = () => {
         {!data ? "Loading..." : "Password: " + data[userIndex].password}
       </p>
       <p className="info-data-text">
-        {!data
-          ? "Loading..."
-          : "Last Login: " +
-            new Date().getDate() +
-            "/" +
-            (new Date().getMonth() + 1) +
-            "/" +
-            new Date().getFullYear() +
-            " @ " +
-            new Date().getHours() +
-            ":" +
-            new Date().getMinutes()}
+        {!data ? "Loading..." : "Last Login: " + data[userIndex].lastlogin}
       </p>
       <h4 className="info-data-text">Login History</h4>
       <div className="info-data-text">

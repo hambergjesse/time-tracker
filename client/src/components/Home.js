@@ -48,6 +48,7 @@ const Home = () => {
     const userData = {
       name: data[userIndex].name,
       lastlogin: lastlogin,
+      pastlogins: [lastlogin],
     };
 
     console.log(data[userIndex].name);
