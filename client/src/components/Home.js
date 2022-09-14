@@ -6,7 +6,7 @@ let userIndex;
 
 const Home = () => {
   const [data, setData] = useState(null);
-  const [loginPerms, setLoginPerms] = useState(null);
+  const [loginPerms, setLoginPerms] = useState("");
   const navigate = useNavigate();
   userIndex = 0;
 
@@ -56,7 +56,6 @@ const Home = () => {
       pastlogins: lastlogin,
     };
 
-    console.log(data[userIndex].name);
     // update user data
     fetch("/user", {
       method: "POST",
@@ -77,18 +76,13 @@ const Home = () => {
       },
     })
       .then((res) => res.json())
-      .then((login) => setLoginPerms(login));
+      .then((loginData) => setLoginPerms(loginData));
 
-    if (!loginPerms) {
-      console.log("waiting for login perms");
-    } else {
-      if (loginPerms === "Success") {
-        console.log("Success");
-        changePath();
-      }
-      console.log("Not Allowed");
-    }
-    console.log("didnt get perms");
+    !loginPerms
+      ? console.log("waiting...")
+      : loginPerms === "Success"
+      ? changePath()
+      : console.log("Not Allowed");
   };
 
   return (
