@@ -2,6 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import tempLogo from "../assets/temp-logo.png";
 
+import moment from "moment";
+import "moment/locale/fi";
+
 let userIndex;
 
 const Home = () => {
@@ -36,16 +39,7 @@ const Home = () => {
           .indexOf(inputName);
 
     // get date and time
-    let lastlogin =
-      new Date().getDate() +
-      "/" +
-      (new Date().getMonth() + 1) +
-      "/" +
-      new Date().getFullYear() +
-      " @ " +
-      new Date().getHours() +
-      ":" +
-      new Date().getMinutes();
+    let lastlogin = moment().format("lll");
 
     // sent data
     const userData = {
