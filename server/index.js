@@ -1,43 +1,92 @@
-const { MongoClient } = require("mongodb");
+require("dotenv").config();
+const mongo = require("mongodb").MongoClient;
 const express = require("express");
-const PORT = process.env.PORT || 3001;
 const app = express();
+const bcrypt = require("bcrypt");
+app.use(express.json());
 
-// connect to  mongodb
-async function main() {
-  const uri =
-    "mongodb+srv://hambergjesse:123@cluster0.osqpkfc.mongodb.net/test?retryWrites=true&w=majority";
-  const client = new MongoClient(uri);
+// connect to mongodb
+let db, collection;
 
-  try {
-    await client.connect();
-    await listDatabases(client);
-  } catch (e) {
-    console.error(e);
-  } finally {
-    await client.close();
+mongo.connect(
+  process.env.MONGO_URI,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+  (err, client) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    db = client.db("timetracker");
+    collection = db.collection("accountdata");
   }
-}
+);
 
-// fetch databases from mongodb
-async function listDatabases(client) {
-  databasesList = await client.db().admin().listDatabases();
-
-  console.log("Databases:");
-  databasesList.databases.forEach((db) => console.log(` - ${db.name}`));
-}
-
-main().catch(console.error);
-
-//
-
-app.get("/api", (req, res) => {
-  res.json({
-    message:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos, harum sunt fuga rem nobis molestias libero quia architecto delectus. Harum, minus ut eos quasi earum, et unde eius optio, amet dolorem sit.",
+// create API for front end fetch
+app.get("/users", (req, res) => {
+  collection.find().toArray((err, users) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ err: err });
+      return;
+    }
+    res.status(200).json(users);
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
+app.post("/users/login", async (req, res) => {
+  try {
+    const user = req.body;
+    const hashedPassword = await bcrypt.hash(req.body.password, 5);
+    console.log(hashedPassword);
+    collection.findOneAndUpdate(
+      { name: user.name },
+      { $set: { password: hashedPassword } }
+    );
+    res.status(201).send();
+  } catch {
+    res.status(500).send();
+  }
+});
+
+app.post("/users/login/auth", async (req, res) => {
+  const users = await collection.find().toArray();
+  const user = await users.find((user) => user.name === req.body.name);
+  if (user === null) {
+    return res.status(400).send("Cannot find user");
+  }
+  console.log(req.body.name);
+  console.log(user.name);
+  try {
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      res.status(200).json("Success");
+      console.log("Success");
+    } else {
+      res.status(404).json("Not Allowed");
+      console.log("Not Allowed");
+    }
+  } catch {
+    res.status(500).send();
+  }
+});
+
+app.post("/user", (req, res) => {
+  const user = req.body;
+  console.log(user);
+
+  collection.findOneAndUpdate(
+    { name: user.name },
+    { $set: { lastlogin: user.lastlogin } }
+  );
+
+  collection.updateOne(
+    { name: user.name },
+    { $push: { pastlogins: { $each: [user.lastlogin], $position: 0 } } }
+  );
+});
+
+app.listen(process.env.PORT || 3001, () => {
+  console.log(`Server listening on ${process.env.PORT || 3001}`);
 });

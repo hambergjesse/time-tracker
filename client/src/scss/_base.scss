@@ -35,10 +35,10 @@
 html {
   body {
     overflow-x: hidden;
+    overflow-x: hidden;
     position: relative;
     width: 100vw;
     height: 100vh;
-    background: var(--colorPrimaryGreen);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: "Segoe UI", "Helvetica Neue", sans-serif;
@@ -52,12 +52,6 @@ html {
   text-align: center;
   align-items: center;
   width: 100vw;
-  gap: 20px;
-
-  .data-text {
-    width: 350px;
-    color: var(--colorWhite);
-  }
 }
 
 h1 {
