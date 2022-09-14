@@ -6,6 +6,7 @@ let userIndex;
 
 const Home = () => {
   const [data, setData] = useState(null);
+  const [loginPerms, setLoginPerms] = useState(null);
   const navigate = useNavigate();
   userIndex = 0;
 
@@ -74,8 +75,20 @@ const Home = () => {
       headers: {
         "Content-type": "application/json",
       },
-    }).then((res) => console.log(res));
-    changePath();
+    })
+      .then((res) => res.json())
+      .then((login) => setLoginPerms(login));
+
+    if (!loginPerms) {
+      console.log("waiting for login perms");
+    } else {
+      if (loginPerms === "Success") {
+        console.log("Success");
+        changePath();
+      }
+      console.log("Not Allowed");
+    }
+    console.log("didnt get perms");
   };
 
   return (

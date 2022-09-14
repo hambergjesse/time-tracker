@@ -41,7 +41,7 @@ app.get("/users", (req, res) => {
 app.post("/users/login", async (req, res) => {
   try {
     const user = req.body;
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const hashedPassword = await bcrypt.hash(req.body.password, 5);
     console.log(hashedPassword);
     collection.findOneAndUpdate(
       { name: user.name },
@@ -54,17 +54,20 @@ app.post("/users/login", async (req, res) => {
 });
 
 app.post("/users/login/auth", async (req, res) => {
-  const user = await collection.find({ name: req.body.name });
+  const users = await collection.find().toArray();
+  const user = await users.find((user) => user.name === req.body.name);
   if (user === null) {
     return res.status(400).send("Cannot find user");
   }
   console.log(req.body.name);
-  console.log("lol" + user.name);
+  console.log(user.name);
   try {
     if (await bcrypt.compare(req.body.password, user.password)) {
       res.send("Success");
+      console.log("Success");
     } else {
       res.send("Not Allowed");
+      console.log("Not Allowed");
     }
   } catch {
     res.status(500).send();
