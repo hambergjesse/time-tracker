@@ -5,8 +5,6 @@ const app = express();
 const bcrypt = require("bcrypt");
 app.use(express.json());
 
-const jwt = require("jsonwebtoken");
-
 // connect to mongodb
 let db, collection;
 
@@ -87,12 +85,6 @@ app.post("/user", (req, res) => {
     { name: user.name },
     { $push: { pastlogins: { $each: [user.lastlogin], $position: 0 } } }
   );
-});
-
-app.post("/login", (req, res) => {
-  //auth user
-  const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-  res.json({ accessToken: accessToken });
 });
 
 app.listen(process.env.PORT || 3001, () => {

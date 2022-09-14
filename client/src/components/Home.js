@@ -1,12 +1,11 @@
-import Avatar from "../assets/avatar.png";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import tempLogo from "../assets/temp-logo.png";
 
 let userIndex;
 
 const Home = () => {
   const [data, setData] = useState(null);
-  const [loginPerms, setLoginPerms] = useState("");
   const navigate = useNavigate();
   userIndex = 0;
 
@@ -76,38 +75,37 @@ const Home = () => {
       },
     })
       .then((res) => res.json())
-      .then((loginData) => setLoginPerms(loginData));
-
-    !loginPerms
-      ? console.log("waiting...")
-      : loginPerms === "Success"
-      ? changePath()
-      : console.log("Not Allowed");
+      .then((loginData) =>
+        !loginData
+          ? console.log("waiting...")
+          : loginData === "Success"
+          ? changePath()
+          : alert("Wrong login credentials, please try again.")
+      );
   };
 
   return (
     <div className="home-container">
-      <div className="home-text-container">
-        <h1>Futurice Employee Login</h1>
-        <p>
-          We’re Futurice. We bring together strategy, design, engineering, and
-          data to help organisations become resilient, so they can take control
-          of their futures.
-        </p>
+      <div className="left-container">
+        <div className="login-container">
+          <h1>Digitalents Academy</h1>
+          <p>Start your day at Digitalents Academy.</p>
+          <select id="select" name="users">
+            {!data
+              ? "Loading..."
+              : data.map((user) => (
+                  <option key={user.id} value={user.name}>
+                    {user.name}
+                  </option>
+                ))}
+          </select>
+          <input id="passfield" placeholder="insert password"></input>
+          <button onClick={handleSearchResult}>Log In</button>
+        </div>
+        <p>Login not working? Please contact your teacher.</p>
       </div>
-      <div className="login-container">
-        <img src={Avatar} alt="" />
-        <select id="select" name="users">
-          {!data
-            ? "Loading..."
-            : data.map((user) => (
-                <option key={user.id} value={user.name}>
-                  {user.name}
-                </option>
-              ))}
-        </select>
-        <input id="passfield" placeholder="insert password"></input>
-        <button onClick={handleSearchResult}>Log In</button>
+      <div className="right-container">
+        <img src={tempLogo} alt="" />
       </div>
     </div>
   );

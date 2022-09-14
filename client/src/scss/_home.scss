@@ -1,20 +1,101 @@
 .home-container {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
-  gap: 25px;
 
-  .home-text-container {
-    display: flex;
-    flex-direction: column;
-    width: 350px;
-    gap: 10px;
+  h1,
+  p {
+    color: black;
+    font-style: italic;
   }
 
-  select {
-    width: 150px;
-    text-align: center;
+  p:last-child {
+    text-decoration: underline;
+  }
+
+  .left-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 50%;
+    height: 100vh;
+
+    .login-container {
+      width: 700px;
+      padding: 50px;
+      border-radius: 15px;
+      height: auto;
+      box-shadow: 0px 0px 100px var(--colorLightGrey);
+
+      h1 {
+        font-size: 42px;
+      }
+
+      p {
+        font-size: 16px;
+      }
+
+      select {
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+
+      input {
+        margin-bottom: 15px;
+      }
+
+      select,
+      input {
+        font-size: 18px;
+        font-style: italic;
+        width: 450px;
+        height: 45px;
+        border-radius: 15px;
+        padding-bottom: 3px;
+        text-align: center;
+        border: 1px solid var(--colorLightGrey);
+      }
+
+      button {
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        padding-bottom: 3px;
+        width: 275px;
+        height: 40px;
+        border-radius: 15px;
+        margin-top: 5px;
+        color: var(--colorWhite);
+        background: var(--colorPrimaryPurple);
+        transition: ease-in-out 0.2s;
+      }
+
+      button:hover {
+        transform: scale(1.025);
+        box-shadow: 0px 0px 15px var(--colorLightGrey);
+      }
+    }
+  }
+
+  .right-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100vh;
+    border-radius: 80px 0px 0px 80px;
+    box-shadow: 0px 0px 100px var(--colorLightGrey);
+    background-image: url(../assets/home-background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    img {
+      width: 500px;
+      height: auto;
+      margin-bottom: 10px;
+    }
   }
 }
