@@ -39,7 +39,7 @@ const Home = () => {
           .indexOf(inputName);
 
     // get date and time
-    const loginDate = moment().format("L");
+    const loginDate = moment().format("ddd L");
     const loginTime = moment().format("LT");
     let lastlogin = { date: loginDate, time: loginTime };
 
