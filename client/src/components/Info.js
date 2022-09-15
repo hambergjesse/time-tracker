@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { userIndex } from "./Home";
+import tempLogo from "../assets/temp-logo.png";
 
 import moment from "moment";
 import "moment/locale/fi";
@@ -54,12 +55,9 @@ const Info = () => {
 
   return (
     <div className="info-wrapper">
-      <div className="info-container">
-        <h3 className="info-data-text">User Info:</h3>
-        <p className="info-data-text">
-          {!data ? "Loading..." : "Username: " + data[userIndex].name}
-        </p>
-        <p className="info-data-text">
+      <div className="info-header-container">
+        <h2>{!data ? "Loading..." : data[userIndex].name}</h2>
+        <p>
           {!data
             ? "Loading..."
             : "Last Login: " +
@@ -67,11 +65,19 @@ const Info = () => {
               " @ " +
               data[userIndex].lastlogin.time}
         </p>
-        <h4 className="info-data-text">Login History</h4>
-        <div className="info-data-text">
-          {!data ? "Loading..." : getCurrentWeek}
-        </div>
         <button onClick={changePath}>Log Out</button>
+      </div>
+      <div className="info-display-wrapper">
+        <div className="info-left-container">
+          <img src={tempLogo} alt="" />
+        </div>
+        <div className="info-right-container">
+          <div className="info-right-text-container">
+            <div className="info-data-text">
+              {!data ? "Loading..." : getCurrentMonth}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
