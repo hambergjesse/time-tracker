@@ -31,9 +31,6 @@ const Info = () => {
           {!data ? "Loading..." : "Username: " + data[userIndex].name}
         </p>
         <p className="info-data-text">
-          {!data ? "Loading..." : "Password: " + data[userIndex].password}
-        </p>
-        <p className="info-data-text">
           {!data
             ? "Loading..."
             : "Last Login: " +
