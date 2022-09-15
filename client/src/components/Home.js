@@ -39,7 +39,9 @@ const Home = () => {
           .indexOf(inputName);
 
     // get date and time
-    let lastlogin = moment().format("lll");
+    const loginDate = moment().format("L");
+    const loginTime = moment().format("LT");
+    let lastlogin = { date: loginDate, time: loginTime };
 
     // sent data
     const userData = {

@@ -1,4 +1,4 @@
-.info-container {
+.info-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -8,22 +8,33 @@
   background: var(--colorWhite);
   border: 1px solid red;
 
-  .info-data-text {
+  .info-container {
     display: flex;
     flex-direction: column;
-    text-align: left;
-    color: black;
-    width: 325px;
-  }
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    background: var(--colorWhite);
+    border: 1px solid red;
 
-  h3 {
-    font-size: 14px;
-    margin-bottom: 5px;
-  }
+    .info-data-text {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      color: black;
+      width: 325px;
+    }
 
-  h4 {
-    font-size: 12px;
-    margin-top: 10px;
-    margin-bottom: 5px;
+    h3 {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    h4 {
+      font-size: 12px;
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
   }
 }

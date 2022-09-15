@@ -20,26 +20,33 @@ const Info = () => {
   const loginHistory = !data
     ? "Loading..."
     : data[userIndex].pastlogins.map((item, index) => (
-        <div key={index}>{item}</div>
+        <div key={index}>{item.date + " @ " + item.time}</div>
       ));
 
   return (
-    <div className="info-container">
-      <h3 className="info-data-text">User Info:</h3>
-      <p className="info-data-text">
-        {!data ? "Loading..." : "Username: " + data[userIndex].name}
-      </p>
-      <p className="info-data-text">
-        {!data ? "Loading..." : "Password: " + data[userIndex].password}
-      </p>
-      <p className="info-data-text">
-        {!data ? "Loading..." : "Last Login: " + data[userIndex].lastlogin}
-      </p>
-      <h4 className="info-data-text">Login History</h4>
-      <div className="info-data-text">
-        {!data ? "Loading..." : loginHistory}
+    <div className="info-wrapper">
+      <div className="info-container">
+        <h3 className="info-data-text">User Info:</h3>
+        <p className="info-data-text">
+          {!data ? "Loading..." : "Username: " + data[userIndex].name}
+        </p>
+        <p className="info-data-text">
+          {!data ? "Loading..." : "Password: " + data[userIndex].password}
+        </p>
+        <p className="info-data-text">
+          {!data
+            ? "Loading..."
+            : "Last Login: " +
+              data[userIndex].lastlogin.date +
+              " @ " +
+              data[userIndex].lastlogin.time}
+        </p>
+        <h4 className="info-data-text">Login History</h4>
+        <div className="info-data-text">
+          {!data ? "Loading..." : loginHistory}
+        </div>
+        <button onClick={changePath}>Log Out</button>
       </div>
-      <button onClick={changePath}>Log Out</button>
     </div>
   );
 };
