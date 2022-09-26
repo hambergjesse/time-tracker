@@ -3,7 +3,6 @@
 A sign in- and employee attendance tracking system made for Digitalents Academy by their request.
 
 ##### 🛠️ Built Using
-<br>
 
 <a href="https://reactjs.org/" target="_blank">
 <img alt="SASS" src="https://img.shields.io/static/v1?style=for-the-badge&message=SASS&color=E37383&logo=SASS&logoColor=00ffff&label=">
@@ -18,7 +17,7 @@ A sign in- and employee attendance tracking system made for Digitalents Academy 
 </a>
 <br><br>
 A group graduation project commissioned by the Digitalents Academy staff to be used as their main way of keeping track of employee attendance and accounts.
-
+<br><br>
 Features include:
 
 - Modern and minimalistic React.js front-end
