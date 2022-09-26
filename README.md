@@ -53,9 +53,16 @@ Install React dependencies etc.
 npm install
 ```
 
-Launch app
+Launch back-end
 
 ```
+npm start
+```
+
+Launch front-end
+
+```
+cd client
 npm start
 ```
 
