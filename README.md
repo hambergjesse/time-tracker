@@ -47,12 +47,6 @@ Open up your terminal and set the path to the project directory using cd
 cd C:\ExampleDirectory
 ```
 
-Install NPM
-
-```
-npm init
-```
-
 Install React dependencies etc.
 
 ```
