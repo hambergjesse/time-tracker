@@ -19,7 +19,6 @@ A sign in- and employee attendance tracking system made for Digitalents Academy 
 A group graduation project commissioned by the Digitalents Academy staff to be used as their main way of keeping track of employee attendance and accounts.
 <br><br>
 Features include:
-
 - Modern and minimalistic React.js front-end
 - Sign in / -out system with hashed verification
 - MongoDB database with user account details
@@ -31,7 +30,6 @@ Features include:
 - Calculated total lateness
 
 To-do / In Progress:
-
 - Admin Account / Account Management
 - JWT Auth for users
 - Late/on-time indicators for employees
