@@ -5,9 +5,10 @@ const app = express();
 const bcrypt = require("bcrypt");
 app.use(express.json());
 
-// connect to mongodb
+// MongoDB variables
 let db, collection;
 
+// connect to MongoDB database
 mongo.connect(
   process.env.MONGO_URI,
   {
@@ -19,12 +20,13 @@ mongo.connect(
       console.error(err);
       return;
     }
+    // set database and collection
     db = client.db("timetracker");
     collection = db.collection("accountdata");
   }
 );
 
-// create API for front end fetch
+// create API for front end fetch of user data
 app.get("/users", (req, res) => {
   collection.find().toArray((err, users) => {
     if (err) {
@@ -36,6 +38,7 @@ app.get("/users", (req, res) => {
   });
 });
 
+// login password verification
 app.post("/users/login", async (req, res) => {
   try {
     const user = req.body;
@@ -51,6 +54,7 @@ app.post("/users/login", async (req, res) => {
   }
 });
 
+// check if username and password are both valid
 app.post("/users/login/auth", async (req, res) => {
   const users = await collection.find().toArray();
   const user = await users.find((user) => user.name === req.body.name);
@@ -72,6 +76,7 @@ app.post("/users/login/auth", async (req, res) => {
   }
 });
 
+// update last login and login history
 app.post("/user", (req, res) => {
   const user = req.body;
   console.log(user);
@@ -87,6 +92,7 @@ app.post("/user", (req, res) => {
   );
 });
 
+// server process
 app.listen(process.env.PORT || 3001, () => {
   console.log(`Server listening on ${process.env.PORT || 3001}`);
 });

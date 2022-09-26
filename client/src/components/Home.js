@@ -2,17 +2,21 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import tempLogo from "../assets/temp-logo.png";
 
+// installed package for date formatting
 import moment from "moment";
 import "moment/locale/fi";
 
+// global index of user profile
 let userIndex;
 
 const Home = () => {
   const [data, setData] = useState(null);
+  // variable to switch page
   const navigate = useNavigate();
+  // global index of user profile
   userIndex = 0;
 
-  // pull data from backend
+  // pull userdata from backend
   useEffect(() => {
     fetch("/users")
       .then((res) => res.json())
@@ -24,12 +28,17 @@ const Home = () => {
     navigate("/info");
   };
 
-  const handleSearchResult = () => {
+  const handleLoginProcess = () => {
+    // select dropdown menu
     const selectElement = document.querySelector("#select");
+    // select password field
     const selectPass = document.querySelector("#passfield");
+    // check which dropdown option is selected
     const inputName = selectElement.options[selectElement.selectedIndex].value;
+    // check inserted password in field
     const inputPass = selectPass.value;
 
+    // check the database index of the selected username
     userIndex = !data
       ? "Loading..."
       : data
@@ -43,7 +52,7 @@ const Home = () => {
     const loginTime = moment().format("LT");
     let lastlogin = { date: loginDate, time: loginTime };
 
-    // sent data
+    // sent user data object to backend
     const userData = {
       name: data[userIndex].name,
       password: inputPass,
@@ -51,7 +60,7 @@ const Home = () => {
       pastlogins: lastlogin,
     };
 
-    // update user data
+    // send user data to backend
     fetch("/user", {
       method: "POST",
       body: JSON.stringify(userData),
@@ -62,7 +71,7 @@ const Home = () => {
       .then((res) => res.json())
       .then((postData) => console.log(postData));
 
-    // password auth bcrypt
+    // send userdata to verify bcrypt hashed password
     fetch("/users/login/auth", {
       method: "POST",
       body: JSON.stringify(userData),
@@ -70,6 +79,7 @@ const Home = () => {
         "Content-type": "application/json",
       },
     })
+      // check if password is correct
       .then((res) => res.json())
       .then((loginData) =>
         !loginData
@@ -87,6 +97,7 @@ const Home = () => {
           <h1>Digitalents Academy</h1>
           <p>Start your day at Digitalents Academy.</p>
           <select id="select" name="users">
+            {/* map/load all available usernames as dropdown list items */}
             {!data
               ? "Loading..."
               : data.map((user) => (
@@ -96,7 +107,7 @@ const Home = () => {
                 ))}
           </select>
           <input id="passfield" placeholder="insert password"></input>
-          <button onClick={handleSearchResult}>Log In</button>
+          <button onClick={handleLoginProcess}>Log In</button>
         </div>
         <p>Login not working? Please contact your teacher.</p>
       </div>
@@ -107,5 +118,6 @@ const Home = () => {
   );
 };
 
+// exports
 export default Home;
 export { userIndex };

@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+// global index of user profile
 import { userIndex } from "./Home";
 import tempLogo from "../assets/temp-logo.png";
 
+// installed package for date formatting
 import moment from "moment";
 import "moment/locale/fi";
 
@@ -10,6 +12,7 @@ const Info = () => {
   const [data, setData] = useState(null);
   const navigate = useNavigate();
 
+  // fetch userdata
   useEffect(() => {
     fetch("/users")
       .then((res) => res.json())
@@ -33,7 +36,7 @@ const Info = () => {
         </div>
       ));
 
-  // show current week
+  // show current month
   let currMonthDay = moment().format("DD");
   console.log(currMonthDay);
   const getCurrentMonth = !data
@@ -44,7 +47,7 @@ const Info = () => {
         </div>
       ));
 
-  // show whole history
+  // show whole login history
   const loginHistory = !data
     ? "Loading..."
     : data[userIndex].pastlogins.map((item, index) => (
@@ -58,6 +61,7 @@ const Info = () => {
       <div className="info-header-container">
         <h2>{!data ? "Loading..." : data[userIndex].name}</h2>
         <p>
+          {/* display last login date and time of specific user */}
           {!data
             ? "Loading..."
             : "Last Login: " +
@@ -65,6 +69,7 @@ const Info = () => {
               " @ " +
               data[userIndex].lastlogin.time}
         </p>
+        {/* logout */}
         <button onClick={changePath}>Log Out</button>
       </div>
       <div className="info-display-wrapper">
@@ -74,6 +79,7 @@ const Info = () => {
         <div className="info-right-container">
           <div className="info-right-text-container">
             <div className="info-data-text">
+              {/* display selected duration from login history */}
               {!data ? "Loading..." : getCurrentMonth}
             </div>
           </div>
