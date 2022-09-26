@@ -28,13 +28,13 @@ const Info = () => {
   let currWeekDay = moment().format("e");
   currWeekDay++;
   console.log(currWeekDay);
-  const getCurrentWeek = !data
+  /*const getCurrentWeek = !data
     ? "Loading..."
     : data[userIndex].pastlogins.slice(0, currWeekDay).map((item, index) => (
         <div id="pastlogin-item" key={index}>
           {item.date + " @ " + item.time}
         </div>
-      ));
+      ));*/
 
   // show current month
   let currMonthDay = moment().format("DD");
@@ -48,13 +48,13 @@ const Info = () => {
       ));
 
   // show whole login history
-  const loginHistory = !data
+  /*const loginHistory = !data
     ? "Loading..."
     : data[userIndex].pastlogins.map((item, index) => (
         <div id="pastlogin-item" key={index}>
           {item.date + " @ " + item.time}
         </div>
-      ));
+      ));*/
 
   return (
     <div className="info-wrapper">
