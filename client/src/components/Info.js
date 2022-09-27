@@ -9,6 +9,7 @@ import moment from "moment";
 import "moment/locale/fi";
 
 const Info = () => {
+  const [clockinTime, setClockInTime] = useState();
   const [data, setData] = useState(null);
   const navigate = useNavigate();
 
@@ -17,7 +18,7 @@ const Info = () => {
     fetch("/users")
       .then((res) => res.json())
       .then((actualData) => setData(actualData));
-  }, []);
+  }, [clockinTime]);
 
   // change page
   const changePath = () => {
@@ -28,16 +29,16 @@ const Info = () => {
   let currWeekDay = moment().format("e");
   currWeekDay++;
   console.log(currWeekDay);
-  /*const getCurrentWeek = !data
+  const getCurrentWeek = !data
     ? "Loading..."
     : data[userIndex].pastlogins.slice(0, currWeekDay).map((item, index) => (
         <div id="pastlogin-item" key={index}>
           {item.date + " @ " + item.time}
         </div>
-      ));*/
+      ));
 
   // show current month
-  let currMonthDay = moment().format("DD");
+  /*let currMonthDay = moment().format("DD");
   console.log(currMonthDay);
   const getCurrentMonth = !data
     ? "Loading..."
@@ -45,7 +46,7 @@ const Info = () => {
         <div id="pastlogin-item" key={index}>
           {item.date + " @ " + item.time}
         </div>
-      ));
+      ));*/
 
   // show whole login history
   /*const loginHistory = !data
@@ -55,6 +56,34 @@ const Info = () => {
           {item.date + " @ " + item.time}
         </div>
       ));*/
+
+  // what happens when you click the "Clock-In" button?
+  const handleClockIn = () => {
+    // get date and time
+    const loginDate = moment().format("ddd L");
+    const loginTime = moment().format("LT");
+    let lastlogin = { date: loginDate, time: loginTime };
+
+    // sent clock-in data object to backend
+    const clockInData = {
+      name: data[userIndex].name,
+      pastlogins: lastlogin,
+      lastlogin: lastlogin,
+    };
+
+    // send user data to backend
+    fetch("/clockin", {
+      method: "POST",
+      body: JSON.stringify(clockInData),
+      headers: {
+        "Content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((clockInRes) => console.log(clockInRes));
+
+    setClockInTime(getCurrentWeek);
+  };
 
   return (
     <div className="info-wrapper">
@@ -77,10 +106,36 @@ const Info = () => {
           <img src={tempLogo} alt="" />
         </div>
         <div className="info-right-container">
+          <div className="info-right-container-buttons">
+            {/* Clock-In Button */}
+            <button onClick={handleClockIn} className="clockin-button">
+              Clock-In
+            </button>
+            {/* Clock-Out Button */}
+            <button className="clockout-button">Clock-Out</button>
+          </div>
           <div className="info-right-text-container">
-            <div className="info-data-text">
-              {/* display selected duration from login history */}
-              {!data ? "Loading..." : getCurrentMonth}
+            {/* dropdown filter for timestamps (daily/weekly/monthly times) */}
+            <select
+              id="info-select"
+              name="filter"
+              placeholder="select timeline"
+            >
+              <option value="" disabled selected>
+                filter timestamps
+              </option>
+            </select>
+            <div className="info-right-list-container">
+              <div className="info-data-text">
+                <h3>Check-Ins</h3>
+                {/* display selected duration from login history */}
+                {!data ? "Loading..." : getCurrentWeek}
+              </div>
+              <div className="info-data-text">
+                <h3>Check-Outs</h3>
+                {/* display selected duration from logout history */}
+                {!data ? "Loading..." : getCurrentWeek}
+              </div>
             </div>
           </div>
         </div>

@@ -61,8 +61,6 @@ app.post("/users/login/auth", async (req, res) => {
   if (user === null) {
     return res.status(400).send("Cannot find user");
   }
-  console.log(req.body.name);
-  console.log(user.name);
   try {
     if (await bcrypt.compare(req.body.password, user.password)) {
       res.status(200).json("Success");
@@ -77,7 +75,7 @@ app.post("/users/login/auth", async (req, res) => {
 });
 
 // update last login and login history
-app.post("/user", (req, res) => {
+app.post("/clockin", (req, res) => {
   const user = req.body;
   console.log(user);
 
@@ -90,6 +88,7 @@ app.post("/user", (req, res) => {
     { name: user.name },
     { $push: { pastlogins: { $each: [user.lastlogin], $position: 0 } } }
   );
+  console.log("clock-in updated");
 });
 
 // server process
