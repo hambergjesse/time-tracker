@@ -9,7 +9,8 @@ import moment from "moment";
 import "moment/locale/fi";
 
 const Info = () => {
-  const [clockinTime, setClockInTime] = useState();
+  const [clockInTime, setClockInTime] = useState();
+  const [clockOutTime, setClockOutTime] = useState();
   const [data, setData] = useState(null);
   const navigate = useNavigate();
 
@@ -18,7 +19,7 @@ const Info = () => {
     fetch("/users")
       .then((res) => res.json())
       .then((actualData) => setData(actualData));
-  }, [clockinTime]);
+  }, [clockInTime, clockOutTime]);
 
   // change page
   const changePath = () => {
@@ -29,9 +30,16 @@ const Info = () => {
   let currWeekDay = moment().format("e");
   currWeekDay++;
   console.log(currWeekDay);
-  const getCurrentWeek = !data
+  const getWeekClockIns = !data
     ? "Loading..."
     : data[userIndex].pastlogins.slice(0, currWeekDay).map((item, index) => (
+        <div id="pastlogin-item" key={index}>
+          {item.date + " @ " + item.time}
+        </div>
+      ));
+  const getWeekClockOuts = !data
+    ? "Loading..."
+    : data[userIndex].pastlogouts.slice(0, currWeekDay).map((item, index) => (
         <div id="pastlogin-item" key={index}>
           {item.date + " @ " + item.time}
         </div>
@@ -57,11 +65,11 @@ const Info = () => {
         </div>
       ));*/
 
+  // get date and time
+  const loginDate = moment().format("ddd L");
+  const loginTime = moment().format("LT");
   // what happens when you click the "Clock-In" button?
   const handleClockIn = () => {
-    // get date and time
-    const loginDate = moment().format("ddd L");
-    const loginTime = moment().format("LT");
     let lastlogin = { date: loginDate, time: loginTime };
 
     // sent clock-in data object to backend
@@ -82,7 +90,32 @@ const Info = () => {
       .then((res) => res.json())
       .then((clockInRes) => console.log(clockInRes));
 
-    setClockInTime(getCurrentWeek);
+    setClockInTime(getWeekClockIns);
+  };
+
+  // what happens when you click the "Clock-In" button?
+  const handleClockOut = () => {
+    let lastlogin = { date: loginDate, time: loginTime };
+
+    // sent clock-in data object to backend
+    const clockInData = {
+      name: data[userIndex].name,
+      pastlogouts: lastlogin,
+      lastlogin: lastlogin,
+    };
+
+    // send user data to backend
+    fetch("/clockout", {
+      method: "POST",
+      body: JSON.stringify(clockInData),
+      headers: {
+        "Content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((clockOutRes) => console.log(clockOutRes));
+
+    setClockOutTime(getWeekClockOuts);
   };
 
   return (
@@ -112,7 +145,9 @@ const Info = () => {
               Clock-In
             </button>
             {/* Clock-Out Button */}
-            <button className="clockout-button">Clock-Out</button>
+            <button onClick={handleClockOut} className="clockout-button">
+              Clock-Out
+            </button>
           </div>
           <div className="info-right-text-container">
             {/* dropdown filter for timestamps (daily/weekly/monthly times) */}
@@ -129,12 +164,12 @@ const Info = () => {
               <div className="info-data-text">
                 <h3>Check-Ins</h3>
                 {/* display selected duration from login history */}
-                {!data ? "Loading..." : getCurrentWeek}
+                {!data ? "Loading..." : getWeekClockIns}
               </div>
               <div className="info-data-text">
                 <h3>Check-Outs</h3>
                 {/* display selected duration from logout history */}
-                {!data ? "Loading..." : getCurrentWeek}
+                {!data ? "Loading..." : getWeekClockOuts}
               </div>
             </div>
           </div>

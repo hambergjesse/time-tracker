@@ -91,6 +91,35 @@ app.post("/clockin", (req, res) => {
   console.log("clock-in updated");
 });
 
+// update last login and login history
+app.post("/clockin", (req, res) => {
+  const user = req.body;
+  console.log(user);
+
+  collection.findOneAndUpdate(
+    { name: user.name },
+    { $set: { lastlogin: user.lastlogin } }
+  );
+
+  collection.updateOne(
+    { name: user.name },
+    { $push: { pastlogins: { $each: [user.lastlogin], $position: 0 } } }
+  );
+  console.log("clock-in updated");
+});
+
+// update last login and login history
+app.post("/clockout", (req, res) => {
+  const user = req.body;
+  console.log(user);
+
+  collection.updateOne(
+    { name: user.name },
+    { $push: { pastlogouts: { $each: [user.lastlogin], $position: 0 } } }
+  );
+  console.log("clock-out updated");
+});
+
 // server process
 app.listen(process.env.PORT || 3001, () => {
   console.log(`Server listening on ${process.env.PORT || 3001}`);
