@@ -57,19 +57,7 @@ const Home = () => {
       name: data[userIndex].name,
       password: inputPass,
       lastlogin: lastlogin,
-      pastlogins: lastlogin,
     };
-
-    // send user data to backend
-    fetch("/user", {
-      method: "POST",
-      body: JSON.stringify(userData),
-      headers: {
-        "Content-type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((postData) => console.log(postData));
 
     // send userdata to verify bcrypt hashed password
     fetch("/users/login/auth", {
