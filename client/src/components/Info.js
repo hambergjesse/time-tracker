@@ -4,13 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { userIndex } from "./Home";
 import tempLogo from "../assets/temp-logo.png";
 
+// welcome popup
+import Swal from "sweetalert2";
+//import withReactContent from "sweetalert2-react-content";
+
 // installed package for date formatting
 import moment from "moment";
 import "moment/locale/fi";
 
 const Info = () => {
-  const [clockInList, setClockInListUpdate] = useState("");
-  const [clockOutList, setClockOutListUpdate] = useState("");
+  let [clockInList, setClockInListUpdate] = useState("");
+  let [clockOutList, setClockOutListUpdate] = useState("");
   const [clockInTime, setClockInTime] = useState();
   const [clockOutTime, setClockOutTime] = useState();
   const [data, setData] = useState(null);
@@ -46,6 +50,27 @@ const Info = () => {
         </div>
       ));
 
+  // clock-in/out popup message via SweetAlert2
+  const popUpMessage = (titleValue, htmlValue, timerValue) => {
+    let timerInterval;
+    Swal.fire({
+      title: titleValue,
+      html: htmlValue,
+      timer: timerValue,
+      timerProgressBar: true,
+      confirmButtonColor: "var(--colorPrimaryPurple)",
+      didOpen: () => {},
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log("I was closed by the timer");
+      }
+    });
+  };
+
   // get date and time
   const loginDate = moment().format("ddd L");
   const loginTime = moment().format("LT");
@@ -72,6 +97,13 @@ const Info = () => {
       .then((clockInRes) => console.log(clockInRes));
 
     setClockInTime(getWeekClockIns);
+
+    // clock-in popup
+    popUpMessage(
+      "Welcome to work!",
+      "We hope you have a great day at Digitalents Academy.",
+      1500
+    );
   };
 
   // what happens when you click the "Clock-In" button?
@@ -97,6 +129,13 @@ const Info = () => {
       .then((clockOutRes) => console.log(clockOutRes));
 
     setClockOutTime(getWeekClockOuts);
+
+    // clock-in popup
+    popUpMessage(
+      "Have a nice day!",
+      "We hope that you had a productive day here at Digitalents Academy.",
+      2500
+    );
   };
 
   // check which option of the history filter is selected
@@ -107,70 +146,59 @@ const Info = () => {
     { value: "total", text: "Total History" },
   ];
 
+  // dropdown check-in/out filter system
   const [selectedFilter, setSelectedFilter] = useState();
 
   useEffect(() => {
     console.log(selectedFilter);
-    let clockInList;
-    let clockOutList;
+    let clockInList, clockOutList;
     let currMonthDay = moment().format("DD");
+
+    const thisMonthList = (value) => {
+      return !data
+        ? "Loading..."
+        : value.slice(0, currMonthDay).map((item, index) => (
+            <div id="pastlogin-item" key={index}>
+              {item.date + " @ " + item.time}
+            </div>
+          ));
+    };
+
+    const thisWeekList = (value) => {
+      return !data
+        ? "Loading..."
+        : value.slice(0, currWeekDay).map((item, index) => (
+            <div id="pastlogin-item" key={index}>
+              {item.date + " @ " + item.time}
+            </div>
+          ));
+    };
+
+    const thisTotalList = (value) => {
+      return !data
+        ? "Loading..."
+        : value.map((item, index) => (
+            <div id="pastlogin-item" key={index}>
+              {item.date + " @ " + item.time}
+            </div>
+          ));
+    };
 
     if (!selectedFilter) {
       console.log("Waiting for selected filter...");
     } else {
       if (selectedFilter === "month") {
-        clockInList = !data
-          ? "Loading..."
-          : data[userIndex].pastlogins
-              .slice(0, currMonthDay)
-              .map((item, index) => (
-                <div id="pastlogin-item" key={index}>
-                  {item.date + " @ " + item.time}
-                </div>
-              ));
-        clockOutList = !data
-          ? "Loading..."
-          : data[userIndex].pastlogouts
-              .slice(0, currMonthDay)
-              .map((item, index) => (
-                <div id="pastlogin-item" key={index}>
-                  {item.date + " @ " + item.time}
-                </div>
-              ));
+        clockInList = thisMonthList(data[userIndex].pastlogins);
+        clockOutList = thisMonthList(data[userIndex].pastlogouts);
       } else if (selectedFilter === "week") {
-        clockInList = !data
-          ? "Loading..."
-          : data[userIndex].pastlogins
-              .slice(0, currWeekDay)
-              .map((item, index) => (
-                <div id="pastlogin-item" key={index}>
-                  {item.date + " @ " + item.time}
-                </div>
-              ));
-        clockOutList = !data
-          ? "Loading..."
-          : data[userIndex].pastlogouts
-              .slice(0, currWeekDay)
-              .map((item, index) => (
-                <div id="pastlogin-item" key={index}>
-                  {item.date + " @ " + item.time}
-                </div>
-              ));
+        clockInList = thisWeekList(data[userIndex].pastlogins);
+        clockOutList = thisWeekList(data[userIndex].pastlogouts);
+      } else if (selectedFilter === "total") {
+        clockInList = thisTotalList(data[userIndex].pastlogins);
+        clockOutList = thisTotalList(data[userIndex].pastlogouts);
       } else {
-        clockInList = !data
-          ? "Loading..."
-          : data[userIndex].pastlogins.map((item, index) => (
-              <div id="pastlogin-item" key={index}>
-                {item.date + " @ " + item.time}
-              </div>
-            ));
-        clockOutList = !data
-          ? "Loading..."
-          : data[userIndex].pastlogouts.map((item, index) => (
-              <div id="pastlogin-item" key={index}>
-                {item.date + " @ " + item.time}
-              </div>
-            ));
+        clockInList = thisWeekList(data[userIndex].pastlogins);
+        clockOutList = thisWeekList(data[userIndex].pastlogouts);
       }
     }
     setClockInListUpdate(clockInList);
@@ -231,13 +259,17 @@ const Info = () => {
             <div className="info-right-list-container">
               <div className="info-data-text">
                 <h3>Check-Ins</h3>
-                {/* display selected duration from login history */}
-                {!data ? "Loading..." : clockInList}
+                <div className="info-data-list">
+                  {/* display selected duration from login history */}
+                  {!data ? "Loading..." : clockInList}
+                </div>
               </div>
               <div className="info-data-text">
                 <h3>Check-Outs</h3>
-                {/* display selected duration from logout history */}
-                {!data ? "Loading..." : clockOutList}
+                <div className="info-data-list">
+                  {/* display selected duration from logout history */}
+                  {!data ? "Loading..." : clockOutList}
+                </div>
               </div>
             </div>
           </div>
