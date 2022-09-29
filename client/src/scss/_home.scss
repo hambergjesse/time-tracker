@@ -43,10 +43,6 @@
         margin-bottom: 15px;
       }
 
-      input {
-        margin-bottom: 15px;
-      }
-
       select,
       input {
         font-size: 18px;
@@ -57,6 +53,12 @@
         padding-bottom: 3px;
         text-align: center;
         border: 1px solid var(--colorLightGrey);
+      }
+
+      .login-container-wronglogin {
+        color: var(--colorRed);
+        text-decoration: underline;
+        font-size: 14px;
       }
 
       button {
