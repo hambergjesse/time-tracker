@@ -13,11 +13,11 @@ import moment from "moment";
 import "moment/locale/fi";
 
 const Info = () => {
-  let [clockInList, setClockInListUpdate] = useState(""),
-    [clockOutList, setClockOutListUpdate] = useState(""),
+  let [clockInList, setClockInListUpdate] = useState([]),
+    [clockOutList, setClockOutListUpdate] = useState([]),
     [isDisabled, setisDisabled] = useState(false);
-  const [clockInTime, setClockInTime] = useState(),
-    [clockOutTime, setClockOutTime] = useState(),
+  const [clockInTime, setClockInTime] = useState(""),
+    [clockOutTime, setClockOutTime] = useState(""),
     [data, setData] = useState(null),
     navigate = useNavigate();
 
@@ -101,7 +101,6 @@ const Info = () => {
     setClockInTime(getWeekClockIns);
     // disable clock-in button and enable clock-out
     setisDisabled(true);
-
     // clock-in popup
     popUpMessage("success", "You have clocked in!", "", 1500);
   };
@@ -131,19 +130,19 @@ const Info = () => {
     setClockOutTime(getWeekClockOuts);
     // disable clock-out and enable clock-in button
     setisDisabled(false);
-
     // clock-in popup
     popUpMessage("info", "You have clocked out!", "", 2500);
   };
 
   // dropdown check-in/out filter system
-  const [selectedFilter, setSelectedFilter] = useState();
+  const [selectedFilter, setSelectedFilter] = useState(""),
+    [listScrollBar, setListScrollBar] = useState({ overflow: "hidden" });
 
   // dropdown menu options
   const options = [
-    { value: "", text: "Choose an option" },
-    { value: "week", text: "This Week" },
+    { value: "default", text: "Choose an option" },
     { value: "month", text: "This Month" },
+    { value: "week", text: "This Week" },
     { value: "total", text: "Total History" },
   ];
 
@@ -188,6 +187,12 @@ const Info = () => {
     // check which option is selected
     if (!selectedFilter) {
       console.log("Waiting for selected filter...");
+      !data
+        ? console.log()
+        : (clockInList = thisWeekList(data[userIndex].pastlogins));
+      !data
+        ? console.log()
+        : (clockOutList = thisWeekList(data[userIndex].pastlogouts));
     } else {
       if (selectedFilter === "month") {
         clockInList = thisMonthList(data[userIndex].pastlogins);
@@ -198,14 +203,24 @@ const Info = () => {
       } else if (selectedFilter === "total") {
         clockInList = thisTotalList(data[userIndex].pastlogins);
         clockOutList = thisTotalList(data[userIndex].pastlogouts);
-      } else if (selectedFilter === "") {
+      } else if (selectedFilter === "default") {
         clockInList = thisWeekList(data[userIndex].pastlogins);
         clockOutList = thisWeekList(data[userIndex].pastlogouts);
       }
     }
+
     setClockInListUpdate(clockInList);
     setClockOutListUpdate(clockOutList);
   }, [currWeekDay, data, selectedFilter]);
+
+  // enable/disable scroll bar based on list length
+  useEffect(() => {
+    !selectedFilter
+      ? console.log("waiting for selectfilter")
+      : clockInList.length > 7 || clockOutList.length > 7
+      ? setListScrollBar({ overflowY: "scroll" })
+      : setListScrollBar({ overflowY: "hidden" });
+  }, [clockInList, clockOutList, selectedFilter]);
 
   return (
     <div className="info-wrapper">
@@ -269,14 +284,14 @@ const Info = () => {
             <div className="info-right-list-container">
               <div className="info-data-text">
                 <h3>Check-Ins</h3>
-                <div className="info-data-list">
+                <div style={listScrollBar} className="info-data-list">
                   {/* display selected duration from login history */}
                   {!data ? "Loading..." : clockInList}
                 </div>
               </div>
               <div className="info-data-text">
                 <h3>Check-Outs</h3>
-                <div className="info-data-list">
+                <div style={listScrollBar} className="info-data-list">
                   {/* display selected duration from logout history */}
                   {!data ? "Loading..." : clockOutList}
                 </div>
