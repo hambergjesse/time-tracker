@@ -11,6 +11,7 @@ let userIndex;
 
 const Home = () => {
   const [data, setData] = useState(null);
+  let [wrongLogin, setWrongLogin] = useState("");
   // variable to switch page
   const navigate = useNavigate();
   // global index of user profile
@@ -37,6 +38,8 @@ const Home = () => {
     const inputName = selectElement.options[selectElement.selectedIndex].value;
     // check inserted password in field
     const inputPass = selectPass.value;
+    // reset wrong login message
+    setWrongLogin("");
 
     // check the database index of the selected username
     userIndex = !data
@@ -74,7 +77,7 @@ const Home = () => {
           ? console.log("waiting...")
           : loginData === "Success"
           ? changePath()
-          : alert("Wrong login credentials, please try again.")
+          : setWrongLogin("Wrong login credentials, please try again.")
       );
   };
 
@@ -95,6 +98,7 @@ const Home = () => {
                 ))}
           </select>
           <input id="passfield" placeholder="insert password"></input>
+          <p className="login-container-wronglogin">{wrongLogin}</p>
           <button onClick={handleLoginProcess}>Log In</button>
         </div>
         <p>Login not working? Please contact your teacher.</p>
