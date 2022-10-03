@@ -81,6 +81,9 @@ const Home = () => {
       );
   };
 
+  const boop = moment().format("LT");
+  console.log(moment(boop).add(5, "hours").format("LT"));
+
   return (
     <div className="home-container">
       <div className="left-container">

@@ -4,9 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { userIndex } from "./Home";
 import tempLogo from "../assets/temp-logo.png";
 
-// welcome popup
-import Swal from "sweetalert2";
-//import withReactContent from "sweetalert2-react-content";
+// check-in/out popup message
+import PopUpMessage from "../components/PopUpMessage";
 
 // installed package for date formatting
 import moment from "moment";
@@ -51,33 +50,12 @@ const Info = () => {
         </div>
       ));
 
-  // clock-in/out popup message via SweetAlert2
-  const popUpMessage = (iconValue, titleValue, htmlValue, timerValue) => {
-    let timerInterval;
-    Swal.fire({
-      icon: iconValue,
-      title: titleValue,
-      html: htmlValue,
-      timer: timerValue,
-      timerProgressBar: true,
-      confirmButtonColor: "var(--colorPrimaryPurple)",
-      didOpen: () => {},
-      willClose: () => {
-        clearInterval(timerInterval);
-      },
-    }).then((result) => {
-      /* Read more about handling dismissals below */
-      if (result.dismiss === Swal.DismissReason.timer) {
-        console.log("I was closed by the timer");
-      }
-    });
-  };
-
-  // get date and time
-  const loginDate = moment().format("ddd L");
-  const loginTime = moment().format("LT");
   // what happens when you click the "Clock-In" button?
   const handleClockIn = () => {
+    // get date and time
+    const loginDate = moment().format("ddd L");
+    const loginTime = moment().format("LT");
+
     let lastlogin = { date: loginDate, time: loginTime };
 
     // sent clock-in data object to backend
@@ -102,11 +80,14 @@ const Info = () => {
     // disable clock-in button and enable clock-out
     setisDisabled(true);
     // clock-in popup
-    popUpMessage("success", "You have clocked in!", "", 1500);
+    PopUpMessage("success", "You have clocked in!", "", 1500);
   };
 
   // what happens when you click the "Clock-In" button?
   const handleClockOut = () => {
+    // get date and time
+    const loginDate = moment().format("ddd L");
+    const loginTime = moment().format("LT");
     let lastlogin = { date: loginDate, time: loginTime };
 
     // sent clock-in data object to backend
@@ -131,7 +112,7 @@ const Info = () => {
     // disable clock-out and enable clock-in button
     setisDisabled(false);
     // clock-in popup
-    popUpMessage("info", "You have clocked out!", "", 2500);
+    PopUpMessage("info", "You have clocked out!", "", 2500);
   };
 
   // dropdown check-in/out filter system
