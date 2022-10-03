@@ -1,9 +1,13 @@
 require("dotenv").config();
 const mongo = require("mongodb").MongoClient;
+const path = require("path");
 const express = require("express");
 const app = express();
 const bcrypt = require("bcrypt");
 app.use(express.json());
+
+// Have Node serve the files for our built React app
+app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 // MongoDB variables
 let db, collection;
@@ -118,6 +122,11 @@ app.post("/clockout", (req, res) => {
     { $push: { pastlogouts: { $each: [user.lastlogin], $position: 0 } } }
   );
   console.log("clock-out updated");
+});
+
+// All other GET requests not handled before will return our React app
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });
 
 // server process
