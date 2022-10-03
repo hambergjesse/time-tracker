@@ -39,6 +39,10 @@ Features include:
 To-do / In Progress:
 
 - Admin Account / Account Management
+  - Create/Delete users
+  - Change user passwords
+  - View user check-in/out histories
+  - Edit specific data (login history etc)
 - JWT Auth for users
 - Late/on-time indicators for employees
 - Calculated total lateness
