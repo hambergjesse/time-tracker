@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.5e91fa5c.css",
+    "main.js": "/static/js/main.e0b54a10.js",
+    "static/media/home-background.jpg": "/static/media/home-background.e4ef3087e6be984e81f4.jpg",
+    "static/media/user-background.jpg": "/static/media/user-background.36e475080d3ab07b66a4.jpg",
+    "static/media/temp-logo.png": "/static/media/temp-logo.78582edd32cb0bc97a02.png",
+    "index.html": "/index.html",
+    "main.5e91fa5c.css.map": "/static/css/main.5e91fa5c.css.map",
+    "main.e0b54a10.js.map": "/static/js/main.e0b54a10.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5e91fa5c.css",
+    "static/js/main.e0b54a10.js"
+  ]
+}
