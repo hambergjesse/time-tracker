@@ -128,7 +128,7 @@ app.post("/admin/change-password/", async (req, res) => {
   }
 });
 
-// update last login and login history
+// create user
 app.post("/admin/create-user/", async (req, res) => {
   try {
     const user = req.body;
@@ -146,6 +146,19 @@ app.post("/admin/create-user/", async (req, res) => {
   } catch {
     res.status(500).send();
     console.log("failed to create new user");
+  }
+});
+
+// delete user
+app.post("/admin/delete-user/", async (req, res) => {
+  try {
+    const user = req.body;
+    collection.deleteOne({ name: user.name });
+    res.status(201).send();
+    console.log("deleted user");
+  } catch {
+    res.status(500).send();
+    console.log("failed to delete user");
   }
 });
 

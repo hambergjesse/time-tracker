@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import tempLogo from "../assets/temp-logo.png";
+import adminIcon from "../assets/admin-icon.png";
 
 // global context variable setup
 import React, { useContext } from "react";
@@ -107,7 +108,13 @@ const Home = () => {
         <p>Login not working? Please contact your teacher.</p>
       </div>
       <div className="right-container">
-        <img src={tempLogo} alt="" />
+        <img
+          onClick={() => navigate("/admin")}
+          className="right-container-admin"
+          src={adminIcon}
+          alt=""
+        />
+        <img className="right-container-logo" src={tempLogo} alt="" />
       </div>
     </div>
   );
