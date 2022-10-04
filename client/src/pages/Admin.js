@@ -22,44 +22,6 @@ const Admin = () => {
       navigate("/");
     };
 
-  // Create new user ( WIP )
-  const createNewUser = () => {
-    // select name field
-    const selectName = document.querySelector("#admin-createuser-name-field");
-    // check inserted name in field
-    const inputName = selectName.value;
-    // select password field
-    const selectPass = document.querySelector("#admin-createuser-pass-field");
-    // check inserted password in field
-    const inputPass = selectPass.value;
-
-    // get date and time
-    const loginDate = moment().format("ddd L");
-    const loginTime = moment().format("LT");
-    let lastlogin = { date: loginDate, time: loginTime };
-
-    let newUserData;
-    if (!data && !inputName && !inputPass) {
-      console.log("waiting for data");
-    } else {
-      newUserData = {
-        name: inputName,
-        password: inputPass,
-        id: `${data.length + 1}`,
-        lastlogin: lastlogin,
-        pastlogins: [],
-        pastlogouts: [],
-      };
-      fetch("/admin/create-user/", {
-        method: "POST",
-        body: JSON.stringify(newUserData),
-        headers: {
-          "Content-type": "application/json",
-        },
-      }).then((res) => console.log(res));
-    }
-  };
-
   // Change user password and re-hash it ( wIP )
   const changePassword = () => {
     // select dropdown menu
@@ -102,6 +64,68 @@ const Admin = () => {
     }).then((res) => console.log(res));
   };
 
+  // Create new user ( WIP )
+  const createNewUser = () => {
+    // select name field
+    const selectName = document.querySelector("#admin-createuser-name-field");
+    // check inserted name in field
+    const inputName = selectName.value;
+    // select password field
+    const selectPass = document.querySelector("#admin-createuser-pass-field");
+    // check inserted password in field
+    const inputPass = selectPass.value;
+
+    // get date and time
+    const loginDate = moment().format("ddd L");
+    const loginTime = moment().format("LT");
+    let lastlogin = { date: loginDate, time: loginTime };
+
+    let newUserData;
+    if (!data && !inputName) {
+      console.log("waiting for data");
+    } else {
+      newUserData = {
+        name: inputName,
+        password: inputPass,
+        id: `${data.length + 1}`,
+        lastlogin: lastlogin,
+        pastlogins: [],
+        pastlogouts: [],
+      };
+      fetch("/admin/create-user/", {
+        method: "POST",
+        body: JSON.stringify(newUserData),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }).then((res) => console.log(res));
+    }
+  };
+
+  // Delete user ( WIP )
+  const deleteUser = () => {
+    // select name field
+    const selectName = document.querySelector("#admin-deleteuser-select");
+    // check inserted name in field
+    const inputName = selectName.options[selectName.selectedIndex].value;
+
+    let deleteUserData;
+    if (!data && !inputName) {
+      console.log("waiting for data");
+    } else {
+      deleteUserData = {
+        name: inputName,
+      };
+      fetch("/admin/delete-user/", {
+        method: "POST",
+        body: JSON.stringify(deleteUserData),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }).then((res) => console.log(res));
+    }
+  };
+
   return (
     <div className="admin-wrapper">
       <div className="admin-header-container">
@@ -132,7 +156,7 @@ const Admin = () => {
           ></input>
           <button onClick={changePassword}>Change</button>
         </div>
-        <div className="admin-usersearch-container">
+        <div className="admin-createuser-container">
           <h3>Create new user</h3>
           <input
             id="admin-createuser-name-field"
@@ -143,6 +167,20 @@ const Admin = () => {
             placeholder="password"
           ></input>
           <button onClick={createNewUser}>Create</button>
+        </div>
+        <div className="admin-deleteuser-container">
+          <h3>Delete user</h3>
+          <select id="admin-deleteuser-select" name="users">
+            {/* map/load all available usernames as dropdown list items */}
+            {!data
+              ? "Loading..."
+              : data.map((user) => (
+                  <option key={user.id} value={user.name}>
+                    {user.name}
+                  </option>
+                ))}
+          </select>
+          <button onClick={deleteUser}>Change</button>
         </div>
       </div>
     </div>

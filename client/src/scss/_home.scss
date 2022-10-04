@@ -95,7 +95,16 @@
     background-repeat: no-repeat;
     background-size: cover;
 
-    img {
+    .right-container-admin {
+      position: fixed;
+      cursor: pointer;
+      width: 50px;
+      height: auto;
+      top: 2%;
+      right: 1%;
+    }
+
+    .right-container-logo {
       width: 200px;
       height: auto;
       margin-bottom: 10px;
