@@ -42,22 +42,6 @@ app.get("/users", (req, res) => {
   });
 });
 
-// login password verification
-app.post("/users/login", async (req, res) => {
-  try {
-    const user = req.body;
-    const hashedPassword = await bcrypt.hash(req.body.password, 5);
-    console.log(hashedPassword);
-    collection.findOneAndUpdate(
-      { name: user.name },
-      { $set: { password: hashedPassword } }
-    );
-    res.status(201).send();
-  } catch {
-    res.status(500).send();
-  }
-});
-
 // check if username and password are both valid
 app.post("/users/login/auth", async (req, res) => {
   const users = await collection.find().toArray();
@@ -122,6 +106,47 @@ app.post("/clockout", (req, res) => {
     { $push: { pastlogouts: { $each: [user.lastlogin], $position: 0 } } }
   );
   console.log("clock-out updated");
+});
+
+// Admin Panel Below //
+
+// change/create a hashed password
+app.post("/admin/change-password/", async (req, res) => {
+  try {
+    const user = req.body;
+    const hashedPassword = await bcrypt.hash(req.body.password, 5);
+    console.log(hashedPassword);
+    collection.findOneAndUpdate(
+      { name: user.name },
+      { $set: { password: hashedPassword } }
+    );
+    res.status(201).send();
+    console.log("changed password");
+  } catch {
+    res.status(500).send();
+    console.log("password change failed");
+  }
+});
+
+// update last login and login history
+app.post("/admin/create-user/", async (req, res) => {
+  try {
+    const user = req.body;
+    const hashedPassword = await bcrypt.hash(req.body.password, 5);
+    collection.insertOne({
+      name: user.name,
+      password: hashedPassword,
+      id: user.id,
+      lastlogin: user.lastlogin,
+      pastlogins: user.pastlogins,
+      pastlogouts: user.pastlogouts,
+    });
+    res.status(201).send();
+    console.log("created new user");
+  } catch {
+    res.status(500).send();
+    console.log("failed to create new user");
+  }
 });
 
 // All other GET requests not handled before will return our React app

@@ -2,20 +2,20 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import tempLogo from "../assets/temp-logo.png";
 
+// global context variable setup
+import React, { useContext } from "react";
+import { SigninContext } from "../contexts/SigninContext";
+
 // installed package for date formatting
 import moment from "moment";
 import "moment/locale/fi";
 
-// global index of user profile
-let userIndex;
-
 const Home = () => {
+  const { userIndex, setUserIndex } = useContext(SigninContext);
   const [data, setData] = useState(null);
   let [wrongLogin, setWrongLogin] = useState("");
   // variable to switch page
   const navigate = useNavigate();
-  // global index of user profile
-  userIndex = 0;
 
   // pull userdata from backend
   useEffect(() => {
@@ -42,13 +42,16 @@ const Home = () => {
     setWrongLogin("");
 
     // check the database index of the selected username
-    userIndex = !data
-      ? "Loading..."
-      : data
-          .map(function (user) {
-            return user.name;
-          })
-          .indexOf(inputName);
+    setUserIndex(
+      !data
+        ? "Loading..."
+        : data
+            .map(function (user) {
+              return user.name;
+            })
+            .indexOf(inputName)
+    );
+    console.log(userIndex);
 
     // get date and time
     const loginDate = moment().format("ddd L");
@@ -112,4 +115,3 @@ const Home = () => {
 
 // exports
 export default Home;
-export { userIndex };
