@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// global index of user profile
-import { userIndex } from "./Home";
 import tempLogo from "../assets/temp-logo.png";
+
+// global context variable setup
+import React, { useContext } from "react";
+import { SigninContext } from "../contexts/SigninContext";
 
 // check-in/out popup message
 import PopUpMessage from "../components/PopUpMessage";
@@ -12,6 +14,8 @@ import moment from "moment";
 import "moment/locale/fi";
 
 const Info = () => {
+  const { userIndex } = useContext(SigninContext);
+  console.log(userIndex);
   let [clockInList, setClockInListUpdate] = useState([]),
     [clockOutList, setClockOutListUpdate] = useState([]),
     [isDisabled, setisDisabled] = useState(false);
@@ -192,7 +196,7 @@ const Info = () => {
 
     setClockInListUpdate(clockInList);
     setClockOutListUpdate(clockOutList);
-  }, [currWeekDay, data, selectedFilter]);
+  }, [currWeekDay, data, selectedFilter, userIndex]);
 
   // enable/disable scroll bar based on list length
   useEffect(() => {
