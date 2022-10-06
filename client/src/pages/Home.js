@@ -4,6 +4,7 @@ import tempLogo from "../assets/temp-logo.png";
 import adminIcon from "../assets/admin-icon.png";
 
 import TimeWorked from "../components/TimeWorked.js";
+import LateTime from "../components/LateTime";
 
 // global context variable setup
 import React, { useContext } from "react";
@@ -90,6 +91,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <TimeWorked />
+      <LateTime />
       <div className="left-container">
         <div className="login-container">
           <h1>Digitalents Academy</h1>
