@@ -23,7 +23,7 @@ const Home = () => {
     fetch("/users")
       .then((res) => res.json())
       .then((actualData) => setData(actualData));
-  }, []);
+  }, [userIndex]);
 
   // change page
   const changePath = () => {
