@@ -2,11 +2,11 @@ import moment from "moment";
 import "moment/locale/fi";
 
 const TimeWorked = () => {
-  const loginTime = "09:00";
-  const startTime = moment(loginTime.toString(), "HH:mm");
+  const clockInTime = "09:00";
+  const startTime = moment(clockInTime.toString(), "HH:mm");
 
-  const logoutTime = moment().format("LT");
-  const endTime = moment(logoutTime.toString(), "HH:mm");
+  const clockOutTime = moment().format("LT");
+  const endTime = moment(clockOutTime.toString(), "HH:mm");
 
   const duration = moment.duration(endTime.diff(startTime));
 
