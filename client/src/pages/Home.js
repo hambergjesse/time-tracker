@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import tempLogo from "../assets/temp-logo.png";
 import adminIcon from "../assets/admin-icon.png";
 
+import TimeWorked from "../components/TimeWorked.js";
+import LateTime from "../components/LateTime";
+
 // global context variable setup
 import React, { useContext } from "react";
 import { SigninContext } from "../contexts/SigninContext";
@@ -23,7 +26,7 @@ const Home = () => {
     fetch("/users")
       .then((res) => res.json())
       .then((actualData) => setData(actualData));
-  }, []);
+  }, [userIndex]);
 
   // change page
   const changePath = () => {
@@ -61,7 +64,7 @@ const Home = () => {
 
     // sent user data object to backend
     const userData = {
-      name: data[userIndex].name,
+      name: inputName,
       password: inputPass,
       lastlogin: lastlogin,
     };
@@ -87,6 +90,8 @@ const Home = () => {
 
   return (
     <div className="home-container">
+      <TimeWorked />
+      <LateTime />
       <div className="left-container">
         <div className="login-container">
           <h1>Digitalents Academy</h1>
