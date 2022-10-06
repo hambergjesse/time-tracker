@@ -61,7 +61,7 @@ const Home = () => {
 
     // sent user data object to backend
     const userData = {
-      name: data[userIndex].name,
+      name: inputName,
       password: inputPass,
       lastlogin: lastlogin,
     };
