@@ -15,7 +15,7 @@ import "moment/locale/fi";
 
 const Info = () => {
   const { userIndex } = useContext(SigninContext);
-  console.log(userIndex);
+
   let [clockInList, setClockInListUpdate] = useState([]),
     [clockOutList, setClockOutListUpdate] = useState([]),
     [isDisabled, setisDisabled] = useState(false);

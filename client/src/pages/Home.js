@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import tempLogo from "../assets/temp-logo.png";
 import adminIcon from "../assets/admin-icon.png";
 
+import TimeWorked from "../components/TimeWorked.js";
+
 // global context variable setup
 import React, { useContext } from "react";
 import { SigninContext } from "../contexts/SigninContext";
@@ -87,6 +89,7 @@ const Home = () => {
 
   return (
     <div className="home-container">
+      <TimeWorked />
       <div className="left-container">
         <div className="login-container">
           <h1>Digitalents Academy</h1>
