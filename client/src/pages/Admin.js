@@ -91,6 +91,7 @@ const Admin = () => {
         lastlogin: lastlogin,
         pastlogins: [],
         pastlogouts: [],
+        isClockedIn: false,
       };
       fetch("/admin/create-user/", {
         method: "POST",

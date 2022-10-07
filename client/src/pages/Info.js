@@ -67,6 +67,7 @@ const Info = () => {
       name: data[userIndex].name,
       pastlogins: lastlogin,
       lastlogin: lastlogin,
+      isClockedIn: true,
     };
 
     // send user data to backend
@@ -99,6 +100,7 @@ const Info = () => {
       name: data[userIndex].name,
       pastlogouts: lastlogin,
       lastlogin: lastlogin,
+      isClockedIn: false,
     };
 
     // send user data to backend
@@ -206,6 +208,18 @@ const Info = () => {
       ? setListScrollBar({ overflowY: "scroll" })
       : setListScrollBar({ overflowY: "hidden" });
   }, [clockInList, clockOutList, selectedFilter]);
+
+  useEffect(() => {
+    if (!data) {
+      console.log("waiting");
+    } else {
+      if (data[userIndex].isClockedIn === false) {
+        setisDisabled(false);
+      } else {
+        setisDisabled(true);
+      }
+    }
+  }, [data, userIndex]);
 
   return (
     <div className="info-wrapper">

@@ -69,24 +69,7 @@ app.post("/clockin", (req, res) => {
 
   collection.findOneAndUpdate(
     { name: user.name },
-    { $set: { lastlogin: user.lastlogin } }
-  );
-
-  collection.updateOne(
-    { name: user.name },
-    { $push: { pastlogins: { $each: [user.lastlogin], $position: 0 } } }
-  );
-  console.log("clock-in updated");
-});
-
-// update last login and login history
-app.post("/clockin", (req, res) => {
-  const user = req.body;
-  console.log(user);
-
-  collection.findOneAndUpdate(
-    { name: user.name },
-    { $set: { lastlogin: user.lastlogin } }
+    { $set: { lastlogin: user.lastlogin, isClockedIn: true } }
   );
 
   collection.updateOne(
@@ -100,6 +83,11 @@ app.post("/clockin", (req, res) => {
 app.post("/clockout", (req, res) => {
   const user = req.body;
   console.log(user);
+
+  collection.findOneAndUpdate(
+    { name: user.name },
+    { $set: { isClockedIn: false } }
+  );
 
   collection.updateOne(
     { name: user.name },
